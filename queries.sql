@@ -58,12 +58,87 @@ SELECT full_name, COUNT(full_name)
           ON owner_id = owners.id)
       AS c 
       GROUP BY full_name
-    HAVING COUNT (full_name) = (
-      SELECT MAX(count)
-        FROM (
-          SELECT full_name, COUNT(full_name) 
-            FROM animals 
-              LEFT JOIN owners 
-                ON owner_id = owners.id 
-          GROUP BY full_name)
-        AS c);
+  HAVING COUNT (full_name) = (
+    SELECT MAX(count)
+      FROM (
+        SELECT full_name, COUNT(full_name) 
+          FROM animals 
+            LEFT JOIN owners 
+              ON owner_id = owners.id 
+        GROUP BY full_name)
+      AS c);
+
+SELECT animals.name 
+  FROM visits 
+    LEFT JOIN animals 
+      ON animal_id = id 
+  WHERE date_of_visit = (
+    SELECT MAX(date_of_visit) 
+      FROM visits 
+    WHERE vet_id = 1);
+SELECT COUNT(DISTINCT(animal_id)) FROM visits WHERE vet_id = 3;
+SELECT vets.name as vet, species.name as specialization 
+  FROM specializations 
+    FULL JOIN vets 
+      ON vet_id = vets.id 
+    LEFT JOIN species 
+      ON species_id = species.id;
+SELECT name, date_of_visit  
+  FROM visits 
+    LEFT JOIN animals 
+      ON animal_id = id 
+  WHERE vet_id = 3 
+    AND date_of_visit 
+      BETWEEN '2020-04-01' 
+        AND '2020-08-30';
+SELECT name, COUNT(date_of_visit)
+  FROM (
+    SELECT name, date_of_visit 
+      FROM visits
+        LEFT JOIN animals ON animal_id = id) AS c 
+    GROUP BY name
+  HAVING COUNT (date_of_visit) = (
+    SELECT MAX(count)
+      FROM (
+        SELECT COUNT(date_of_visit) 
+          FROM visits 
+        GROUP BY animal_id)
+      AS c);
+SELECT animals.name 
+  FROM visits 
+    LEFT JOIN animals 
+      ON animal_id = id 
+  WHERE date_of_visit = (
+    SELECT MIN(date_of_visit) 
+      FROM visits 
+    WHERE vet_id = 3);
+
+SELECT animals.name as animal, vets.name as vet, date_of_visit
+  FROM visits 
+    LEFT JOIN animals 
+      ON animal_id = animals.id 
+    LEFT JOIN vets
+      ON vet_id = vets.id
+  WHERE date_of_visit = (
+    SELECT MIN(date_of_visit) 
+      FROM visits);
+
+SELECT COUNT(*) AS unspecialized
+  FROM visits
+  LEFT JOIN animals ON animal_id = id
+  WHERE animals.species_id NOT IN (
+    SELECT specializations.species_id FROM specializations 
+    WHERE visits.vet_id = specializations.vet_id);
+
+SELECT species_name FROM (
+  SELECT species.name as species_name, COUNT(animals.species_id) 
+    FROM visits LEFT JOIN animals ON animal_id = id 
+      LEFT JOIN species ON animals.species_id = species.id
+    WHERE vet_id = 2 
+    GROUP BY species.name) as spec_count
+  WHERE count = (
+    SELECT MAX(count) FROM (
+      SELECT COUNT(animals.species_id) 
+      FROM visits LEFT JOIN animals ON animal_id = id 
+      WHERE vet_id = 2 
+      GROUP BY species_id) AS count);

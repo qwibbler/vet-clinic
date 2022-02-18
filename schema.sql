@@ -25,3 +25,25 @@ CREATE TABLE species(
     name VARCHAR(50),
     PRIMARY KEY (id)
 );
+CREATE TABLE vets (
+    id INT GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(50),
+    age VARCHAR(50),
+    date_of_graduation DATE,
+    PRIMARY KEY (id)
+);
+CREATE TABLE specializations (
+    vet_id INT,
+    species_id INT,
+    FOREIGN KEY (vet_id) REFERENCES vets (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (species_id) REFERENCES species (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (vet_id, species_id)
+);
+CREATE TABLE visits (
+    vet_id INT,
+    animal_id INT,
+    date_of_visit DATE,
+    FOREIGN KEY (vet_id) REFERENCES vets (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (vet_id, animal_id, date_of_visit)
+);
