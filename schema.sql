@@ -1,5 +1,5 @@
 /* Database schema to keep the structure of entire database. */
-CREATE TABLE table animals (
+CREATE TABLE animals (
     id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(50),
     date_of_birth DATE,
@@ -49,3 +49,5 @@ CREATE TABLE visits (
     FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id)
 );
+
+CREATE INDEX animal_id_acs ON visits (animal_id ASC);
