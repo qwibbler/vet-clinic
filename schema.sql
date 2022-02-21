@@ -20,6 +20,7 @@ CREATE TABLE owners(
     age INT,
     PRIMARY KEY (id)
 );
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
 CREATE TABLE species(
     id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(50),
@@ -40,10 +41,11 @@ CREATE TABLE specializations (
     PRIMARY KEY (vet_id, species_id)
 );
 CREATE TABLE visits (
+    id INT GENERATED ALWAYS AS IDENTITY,
     vet_id INT,
     animal_id INT,
     date_of_visit DATE,
     FOREIGN KEY (vet_id) REFERENCES vets (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (vet_id, animal_id, date_of_visit)
+    PRIMARY KEY (id)
 );

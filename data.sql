@@ -84,12 +84,12 @@ VALUES (1, 1),
   (3, 2),
   (4, 2);
 INSERT INTO animals (
-  name,
-  date_of_birth,
-  weight_kg,
-  neutered,
-  escape_attempts
-)
+    name,
+    date_of_birth,
+    weight_kg,
+    neutered,
+    escape_attempts
+  )
 VALUES ('Plantmon', '2022-11-15', -5.7, TRUE, 2);
 INSERT INTO visits
 VALUES (1, 1, '2020-05-24'),
@@ -112,3 +112,17 @@ VALUES (1, 1, '2020-05-24'),
   (2, 8, '2020-08-03'),
   (3, 9, '2020-05-24'),
   (1, 9, '2021-01-11');
+INSERT INTO visits (animal_id, vet_id, date_of_visit)
+SELECT *
+FROM (
+    SELECT id
+    FROM animals
+  ) animal_ids,
+  (
+    SELECT id
+    FROM vets
+  ) vets_ids,
+  generate_series('1980-01-01'::timestamp, '2021-01-01', '4 hours') visit_timestamp;
+insert into owners (full_name, email)
+select 'Owner ' || generate_series(1, 2500000),
+  'owner_' || generate_series(1, 2500000) || '@mail.com';
