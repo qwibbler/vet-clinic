@@ -1,5 +1,5 @@
 /* Database schema to keep the structure of entire database. */
-CREATE TABLE table animals (
+CREATE TABLE animals (
     id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(50),
     date_of_birth DATE,
@@ -20,6 +20,7 @@ CREATE TABLE owners(
     age INT,
     PRIMARY KEY (id)
 );
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
 CREATE TABLE species(
     id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(50),
@@ -40,10 +41,16 @@ CREATE TABLE specializations (
     PRIMARY KEY (vet_id, species_id)
 );
 CREATE TABLE visits (
+    id INT GENERATED ALWAYS AS IDENTITY,
     vet_id INT,
     animal_id INT,
     date_of_visit DATE,
     FOREIGN KEY (vet_id) REFERENCES vets (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (vet_id, animal_id, date_of_visit)
+    PRIMARY KEY (id)
 );
+
+CREATE INDEX animal_id_acs ON visits (animal_id ASC);
+CREATE INDEX vet_id_asc ON visits(vet_id ASC);
+CREATE INDEX email_asc ON owners(email ASC);
+
