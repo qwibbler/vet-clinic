@@ -13,8 +13,8 @@ This repository includes files with plain SQL that can be used to recreate a dat
 
 ## Schema ER Diagram
 
-https://dbdiagram.io/d/62153d83485e433543fc3056
-<iframe width="560" height="315" src='https://dbdiagram.io/embed/62153d83485e433543fc3056'> </iframe>
+<!-- https://dbdiagram.io/d/62153d83485e433543fc3056 -->
+[<img width="560" height="315" src='./erd.png'>](https://dbdiagram.io/d/62153d83485e433543fc3056)
 ## Authors
 
 👤 **Author1**
