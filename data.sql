@@ -17,30 +17,10 @@ VALUES ('Agumon', '2020-02-03', 10.23, true, 0),
   ('Boarmon', '2006-01-7', -20.4, TRUE, 7),
   ('Blossom', '1998-10-13', -20.4, TRUE, 7);
 BEGIN;
-UPDATE animals
-SET species = 'unspecified';
-ROLLBACK;
-BEGIN;
-UPDATE animals
-SET species = 'digimon'
-WHERE name LIKE '%mon';
-UPDATE animals
-SET species = 'pokemon'
-WHERE NOT name LIKE '%mon';
-COMMIT;
-ROLLBACK;
-BEGIN;
-DELETE FROM animals;
-ROLLBACK;
-BEGIN;
-DELETE FROM animals
-WHERE date_of_birth > '2022-01-01';
-SAVEPOINT SP1;
-UPDATE animals
-SET weight_kg = weight_kg * -1
-SELECT *
-FROM animals;
-ROLLBACK TO SP1;
+-- DELETE FROM animals
+-- WHERE date_of_birth > '2022-01-01';
+-- SAVEPOINT SP1;
+-- ROLLBACK TO SP1;
 UPDATE animals
 SET weight_kg = weight_kg * -1
 WHERE weight_kg < 0;
@@ -123,6 +103,6 @@ FROM (
     FROM vets
   ) vets_ids,
   generate_series('1980-01-01'::timestamp, '2021-01-01', '4 hours') visit_timestamp;
-insert into owners (full_name, email)
-select 'Owner ' || generate_series(1, 2500000),
+INSERT INTO  owners (full_name, email)
+SELECT 'Owner ' || generate_series(1, 2500000),
   'owner_' || generate_series(1, 2500000) || '@mail.com';
